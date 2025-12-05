@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Thread from "@/components/Thread/Thread";
 import TextInputModal from "./TextInputModal";
@@ -12,13 +11,12 @@ import {
 } from "@/utils/threadStorage";
 import styles from "./Board.module.css";
 
-export default function Board() {
+export default function Board({ isModalOpen, setIsModalOpen }) {
   const [threads, setThreads] = useLocalStorage(THREADS_STORAGE_KEY, []);
   const [archivedThreads, setArchivedThreads] = useLocalStorage(
     ARCHIVED_THREADS_KEY,
     []
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleAddThread(title) {
     const newThread = createThread(title);
@@ -48,10 +46,6 @@ export default function Board() {
 
   return (
     <div className={styles.boardWrapper}>
-      <button className={styles.addButton} onClick={() => setIsModalOpen(true)}>
-        + thread
-      </button>
-
       <div className={styles.board}>
         {typeof window !== "undefined" &&
           threads.map((thread) => (
