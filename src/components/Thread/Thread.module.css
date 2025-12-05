@@ -1,0 +1,120 @@
+/* src/components/Thread/Thread.module.css */
+
+.thread {
+  border-right: 1px solid #ddd;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  /* Force a consistent column width so threads lay out horizontally */
+  flex: 0 0 320px;
+  min-width: 280px;
+  /* Fill the available height from the board so internal content can scroll */
+  height: 100%;
+  min-height: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.title {
+  font-family: "Glacial", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--title-color);
+}
+
+.addBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: black;
+  color: white;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.updates {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.update {
+  display: flex;
+  align-items: flex-start;
+  color: black;
+  gap: 12px;
+  position: relative;
+  padding-left: 12px;
+  margin-bottom: 60px;
+}
+
+.updateText {
+  text-align: start;
+}
+
+.update::after {
+  content: "●";
+  position: absolute;
+  left: -4px;
+  top: -2px;
+  color: #9fe165;
+  z-index: 1;
+}
+
+/* Connecting line for all but first update */
+.update:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -60px;
+  width: 1px;
+  height: calc(100% + 60px);
+  background: #9fe165;
+}
+
+/* First update - line starts at text top */
+.update:first-child::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: #9fe165;
+}
+
+.line {
+  display: none;
+}
+
+/* Inline update input */
+.inlineForm {
+  margin-top: 8px;
+}
+
+.input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.editBtn {
+  border: none;
+  color: black;
+  cursor: pointer;
+}

@@ -1,0 +1,40 @@
+.boardWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  min-height: 0; /* allow children with overflow to shrink */
+}
+
+.addButton {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  background: #9fe165;
+  color: black;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.board {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex: 1;
+  align-items: stretch;
+  min-height: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+}
+
+.board::-webkit-scrollbar {
+  height: 8px;
+}
+.board::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}

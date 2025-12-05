@@ -1,0 +1,67 @@
+.actionsContainer {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 12px;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.actionsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.actionBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #ffffff;
+  border: 1px solid #9fe165;
+  border-radius: 16px;
+  color: #0a0a0a;
+  font-size: 12px;
+}
+
+.removeBadge {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  color: #050505;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.removeBadge:hover {
+  color: #333;
+}
+
+.addActionBtn {
+  color: rgb(28, 28, 28);
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.addActionBtn:hover {
+  background: #9fe165;
+}
+
+.archiveBtn {
+  align-self: end;
+  justify-self: flex-end;
+  color: gainsboro;
+  border: none;
+  cursor: pointer;
+}
