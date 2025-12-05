@@ -4,12 +4,15 @@ import { useState } from "react";
 import TextInputModal from "../Board/TextInputModal";
 import Actions from "./Actions";
 import { addUpdateToThread, updateUpdateInThread } from "@/utils/threadStorage";
+import { ListChevronsDownUp, ListChevronsUpDown } from "lucide-react";
+
 import styles from "./Thread.module.css";
 
 export default function Thread({ thread, onUpdate, onArchive }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUpdateId, setEditingUpdateId] = useState(null);
   const [editingText, setEditingText] = useState("");
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   function handleAddUpdate(text) {
     const updatedThread = addUpdateToThread(thread, text);
@@ -29,6 +32,10 @@ export default function Thread({ thread, onUpdate, onArchive }) {
     setEditingText(update.text);
   }
 
+  function handleToggleCollapse() {
+    setIsCollapsed((s) => !s);
+  }
+
   return (
     <div className={styles.thread}>
       <div className={styles.header}>
@@ -43,18 +50,55 @@ export default function Thread({ thread, onUpdate, onArchive }) {
         </button>
       </div>
 
+      {thread.updates.length > 1 && (
+        <div className={styles.toggleRow}>
+          <button
+            className={styles.uncollapseBtn}
+            onClick={handleToggleCollapse}
+            aria-label={isCollapsed ? "Uncollapse updates" : "Collapse updates"}
+          >
+            {isCollapsed ? (
+              <ListChevronsUpDown color="black" width="18" strokeWidth="1" />
+            ) : (
+              <ListChevronsDownUp color="black" width="18" strokeWidth="1" />
+            )}
+          </button>
+        </div>
+      )}
+
       <div className={styles.updates}>
-        {thread.updates.map((update) => (
-          <div key={update.id} className={styles.update}>
+        {thread.updates.length > 0 && isCollapsed && (
+          <div
+            key={thread.updates[thread.updates.length - 1].id}
+            className={styles.update}
+          >
             <button
               className={styles.editBtn}
-              onClick={() => handleEditClick(update)}
+              onClick={() =>
+                handleEditClick(thread.updates[thread.updates.length - 1])
+              }
               aria-label="Edit update"
             >
-              <p className={styles.updateText}>{update.text}</p>
+              <p className={styles.updateText}>
+                {thread.updates[thread.updates.length - 1].text}
+              </p>
             </button>
           </div>
-        ))}
+        )}
+
+        {thread.updates.length > 0 &&
+          !isCollapsed &&
+          thread.updates.map((update) => (
+            <div key={update.id} className={styles.update}>
+              <button
+                className={styles.editBtn}
+                onClick={() => handleEditClick(update)}
+                aria-label="Edit update"
+              >
+                <p className={styles.updateText}>{update.text}</p>
+              </button>
+            </div>
+          ))}
       </div>
 
       <Actions

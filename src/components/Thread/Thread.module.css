@@ -118,3 +118,9 @@
   color: black;
   cursor: pointer;
 }
+
+.uncollapseBtn {
+  color: black;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
