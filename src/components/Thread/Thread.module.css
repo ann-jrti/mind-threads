@@ -64,6 +64,14 @@
 
 .updateText {
   text-align: start;
+  padding-right: 15px;
+  gap: 6px;
+}
+
+.dateText {
+  color: #515151;
+  font-size: 10px;
+  padding-right: 5px;
 }
 
 .update::after {

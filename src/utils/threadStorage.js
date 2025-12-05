@@ -5,6 +5,19 @@
 export const THREADS_STORAGE_KEY = "mind-threads:threads";
 export const ARCHIVED_THREADS_KEY = "mind-threads:archived";
 
+function formatTwoDigits(value) {
+  return String(value).padStart(2, "0");
+}
+
+export function formatDisplayDate(date = new Date()) {
+  const day = formatTwoDigits(date.getDate());
+  const month = formatTwoDigits(date.getMonth() + 1);
+  const hours = formatTwoDigits(date.getHours());
+  const minutes = formatTwoDigits(date.getMinutes());
+
+  return `${day}/${month} ${hours}:${minutes}`;
+}
+
 /**
  * Create a new thread object with default structure
  * @param {string} title - The thread title
@@ -28,6 +41,9 @@ export function createThread(title) {
  * @returns {Object} - The updated thread object
  */
 export function addUpdateToThread(thread, text) {
+  const timestamp = new Date();
+  const createdAt = timestamp.toISOString();
+
   return {
     ...thread,
     updates: [
@@ -35,10 +51,11 @@ export function addUpdateToThread(thread, text) {
       {
         id: Date.now(),
         text,
-        createdAt: new Date().toISOString(),
+        createdAt,
+        displayDate: formatDisplayDate(timestamp),
       },
     ],
-    updatedAt: new Date().toISOString(),
+    updatedAt: createdAt,
   };
 }
 

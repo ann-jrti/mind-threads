@@ -3,7 +3,11 @@
 import { useState } from "react";
 import TextInputModal from "../Board/TextInputModal";
 import Actions from "./Actions";
-import { addUpdateToThread, updateUpdateInThread } from "@/utils/threadStorage";
+import {
+  addUpdateToThread,
+  updateUpdateInThread,
+  formatDisplayDate,
+} from "@/utils/threadStorage";
 import { ListChevronsDownUp, ListChevronsUpDown } from "lucide-react";
 
 import styles from "./Thread.module.css";
@@ -13,6 +17,18 @@ export default function Thread({ thread, onUpdate, onArchive }) {
   const [editingUpdateId, setEditingUpdateId] = useState(null);
   const [editingText, setEditingText] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(true);
+
+  function getDisplayDate(update) {
+    if (!update) return "";
+    if (update.displayDate) return update.displayDate;
+    if (update.createdAt) {
+      const parsedDate = new Date(update.createdAt);
+      if (!Number.isNaN(parsedDate.getTime())) {
+        return formatDisplayDate(parsedDate);
+      }
+    }
+    return "";
+  }
 
   function handleAddUpdate(text) {
     const updatedThread = addUpdateToThread(thread, text);
@@ -35,6 +51,11 @@ export default function Thread({ thread, onUpdate, onArchive }) {
   function handleToggleCollapse() {
     setIsCollapsed((s) => !s);
   }
+
+  const latestUpdate =
+    thread.updates.length > 0
+      ? thread.updates[thread.updates.length - 1]
+      : null;
 
   return (
     <div className={styles.thread}>
@@ -67,20 +88,18 @@ export default function Thread({ thread, onUpdate, onArchive }) {
       )}
 
       <div className={styles.updates}>
-        {thread.updates.length > 0 && isCollapsed && (
-          <div
-            key={thread.updates[thread.updates.length - 1].id}
-            className={styles.update}
-          >
+        {thread.updates.length > 0 && isCollapsed && latestUpdate && (
+          <div key={latestUpdate.id} className={styles.update}>
             <button
               className={styles.editBtn}
-              onClick={() =>
-                handleEditClick(thread.updates[thread.updates.length - 1])
-              }
+              onClick={() => handleEditClick(latestUpdate)}
               aria-label="Edit update"
             >
               <p className={styles.updateText}>
-                {thread.updates[thread.updates.length - 1].text}
+                <span className={styles.dateText}>
+                  {getDisplayDate(latestUpdate)}
+                </span>
+                {latestUpdate.text}
               </p>
             </button>
           </div>
@@ -95,7 +114,12 @@ export default function Thread({ thread, onUpdate, onArchive }) {
                 onClick={() => handleEditClick(update)}
                 aria-label="Edit update"
               >
-                <p className={styles.updateText}>{update.text}</p>
+                <p className={styles.updateText}>
+                  <span className={styles.dateText}>
+                    {getDisplayDate(update)}
+                  </span>
+                  <span>{update.text}</span>
+                </p>
               </button>
             </div>
           ))}
