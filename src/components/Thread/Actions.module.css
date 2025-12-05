@@ -9,6 +9,11 @@
   position: relative;
 }
 
+.actionBtns {
+  display: flex;
+  justify-content: space-between;
+}
+
 .actionsList {
   display: flex;
   flex-wrap: wrap;
@@ -46,8 +51,9 @@
 }
 
 .addActionBtn {
+  margin-top: 10px;
   color: rgb(28, 28, 28);
-  padding: 8px;
+  padding: 5px;
   border: none;
   border-radius: 6px;
   cursor: pointer;

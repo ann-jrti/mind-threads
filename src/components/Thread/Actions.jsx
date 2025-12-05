@@ -43,14 +43,6 @@ export default function Actions({ thread, onArchive, onUpdate }) {
             ))}
         </div>
 
-        <button
-          className={styles.addActionBtn}
-          onClick={() => setIsModalOpen(true)}
-          aria-label="Add action"
-        >
-          + action
-        </button>
-
         {isModalOpen && (
           <TextInputModal
             title="add action"
@@ -61,7 +53,14 @@ export default function Actions({ thread, onArchive, onUpdate }) {
           />
         )}
       </div>
-      <div>
+      <div className={styles.actionBtns}>
+        <button
+          className={styles.addActionBtn}
+          onClick={() => setIsModalOpen(true)}
+          aria-label="Add action"
+        >
+          + action
+        </button>
         {onArchive && (
           <button
             className={styles.archiveBtn}
