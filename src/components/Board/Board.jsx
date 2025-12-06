@@ -3,6 +3,7 @@
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Thread from "@/components/Thread/Thread";
 import TextInputModal from "./TextInputModal";
+import ArchivedThreadsModal from "./ArchivedThreadsModal";
 import {
   createThread,
   archiveThread,
@@ -11,7 +12,12 @@ import {
 } from "@/utils/threadStorage";
 import styles from "./Board.module.css";
 
-export default function Board({ isModalOpen, setIsModalOpen }) {
+export default function Board({
+  isModalOpen,
+  setIsModalOpen,
+  isArchivedModalOpen,
+  setIsArchivedModalOpen,
+}) {
   const [threads, setThreads] = useLocalStorage(THREADS_STORAGE_KEY, []);
   const [archivedThreads, setArchivedThreads] = useLocalStorage(
     ARCHIVED_THREADS_KEY,
@@ -65,6 +71,13 @@ export default function Board({ isModalOpen, setIsModalOpen }) {
           submitLabel="create"
           onSubmit={handleAddThread}
           onCancel={() => setIsModalOpen(false)}
+        />
+      )}
+
+      {isArchivedModalOpen && (
+        <ArchivedThreadsModal
+          archivedThreads={archivedThreads}
+          onClose={() => setIsArchivedModalOpen(false)}
         />
       )}
     </div>

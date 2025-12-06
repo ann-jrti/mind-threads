@@ -32,3 +32,37 @@
 .addThreadButton:active {
   background: #7fc145;
 }
+
+.archivedButton {
+  background: #e0e0e0;
+  color: black;
+  padding: 4px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+}
+
+.archivedButton:hover {
+  background: #d0d0d0;
+}
+
+.archivedButton:active {
+  background: #c0c0c0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .archivedButton {
+    background: #333333;
+    color: #ededed;
+  }
+
+  .archivedButton:hover {
+    background: #444444;
+  }
+
+  .archivedButton:active {
+    background: #555555;
+  }
+}
