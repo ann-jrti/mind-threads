@@ -42,6 +42,12 @@ export default function Board({
     });
   }
 
+  function handleDeleteArchivedThread(threadId) {
+    setArchivedThreads((prev) =>
+      prev.filter((thread) => thread.id !== threadId)
+    );
+  }
+
   function handleUpdateThread(updatedThread) {
     setThreads((prev) =>
       prev.map((thread) =>
@@ -77,6 +83,7 @@ export default function Board({
       {isArchivedModalOpen && (
         <ArchivedThreadsModal
           archivedThreads={archivedThreads}
+          onDelete={handleDeleteArchivedThread}
           onClose={() => setIsArchivedModalOpen(false)}
         />
       )}

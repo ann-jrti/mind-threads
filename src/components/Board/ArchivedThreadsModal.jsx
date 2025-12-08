@@ -1,9 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { formatDisplayDate } from "@/utils/threadStorage";
 import styles from "./ArchivedThreadsModal.module.css";
 
-export default function ArchivedThreadsModal({ archivedThreads, onClose }) {
+export default function ArchivedThreadsModal({
+  archivedThreads,
+  onClose,
+  onDelete,
+}) {
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
   const monthFormatter = new Intl.DateTimeFormat("en-US", {
     month: "long",
     year: "numeric",
@@ -80,7 +86,16 @@ export default function ArchivedThreadsModal({ archivedThreads, onClose }) {
                   <div className={styles.threadsGrid}>
                     {section.threads.map(({ thread }) => (
                       <div key={thread.id} className={styles.threadCard}>
-                        <h3 className={styles.threadTitle}>{thread.title}</h3>
+                        <div className={styles.threadCardHeader}>
+                          <h3 className={styles.threadTitle}>{thread.title}</h3>
+                          <button
+                            className={styles.deleteButton}
+                            onClick={() => setPendingDeleteId(thread.id)}
+                            aria-label="Delete archived thread"
+                          >
+                            delete
+                          </button>
+                        </div>
 
                         {thread.archivedAt && (
                           <p className={styles.archivedDate}>
@@ -92,7 +107,6 @@ export default function ArchivedThreadsModal({ archivedThreads, onClose }) {
                         <div className={styles.threadContent}>
                           {thread.updates.length > 0 && (
                             <div className={styles.updates}>
-                              <h4 className={styles.sectionTitle}>updates</h4>
                               {thread.updates.map((update) => (
                                 <div key={update.id} className={styles.update}>
                                   <span className={styles.updateDate}>
@@ -128,6 +142,40 @@ export default function ArchivedThreadsModal({ archivedThreads, onClose }) {
           )}
         </div>
       </div>
+
+      {pendingDeleteId !== null && (
+        <div
+          className={styles.confirmOverlay}
+          onClick={() => setPendingDeleteId(null)}
+        >
+          <div
+            className={styles.confirmDialog}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className={styles.confirmMessage}>
+              Are you sure you want to delete this archived thread? This action
+              is permanent.
+            </p>
+            <div className={styles.confirmActions}>
+              <button
+                className={styles.cancelButton}
+                onClick={() => setPendingDeleteId(null)}
+              >
+                cancel
+              </button>
+              <button
+                className={styles.confirmButton}
+                onClick={() => {
+                  onDelete(pendingDeleteId);
+                  setPendingDeleteId(null);
+                }}
+              >
+                yes, delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
