@@ -129,3 +129,20 @@ export function toggleActionInThread(thread, actionId) {
     updatedAt: new Date().toISOString(),
   };
 }
+
+/**
+ * Update an action's text in a thread
+ * @param {Object} thread - The thread object
+ * @param {number} actionId - The ID of the action to update
+ * @param {string} newText - The new text for the action
+ * @returns {Object} - The updated thread object
+ */
+export function updateActionInThread(thread, actionId, newText) {
+  return {
+    ...thread,
+    actions: thread.actions.map((action) =>
+      action.id === actionId ? { ...action, text: newText } : action
+    ),
+    updatedAt: new Date().toISOString(),
+  };
+}

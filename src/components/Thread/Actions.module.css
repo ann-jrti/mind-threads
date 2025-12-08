@@ -50,6 +50,29 @@
 
 .actionText {
   flex: 1;
+  cursor: text;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.actionText:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.actionText.completed {
+  color: #888;
+}
+
+.actionEditInput {
+  flex: 1;
+  font-size: 13px;
+  padding: 2px 4px;
+  border: 1px solid #9fe165;
+  border-radius: 4px;
+  outline: none;
+  background: #fff;
+  color: #0a0a0a;
 }
 
 .removeAction {
