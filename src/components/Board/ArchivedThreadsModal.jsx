@@ -124,11 +124,22 @@ export default function ArchivedThreadsModal({
                             <div className={styles.actions}>
                               <h4 className={styles.sectionTitle}>actions</h4>
                               {thread.actions.map((action) => (
-                                <div key={action.id} className={styles.action}>
-                                  <p className={styles.actionText}>
+                                <label
+                                  key={action.id}
+                                  className={`${styles.actionItem} ${
+                                    action.completed ? styles.completed : ""
+                                  }`}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={action.completed || false}
+                                    readOnly
+                                    className={styles.actionCheckbox}
+                                  />
+                                  <span className={styles.actionText}>
                                     {action.text}
-                                  </p>
-                                </div>
+                                  </span>
+                                </label>
                               ))}
                             </div>
                           )}

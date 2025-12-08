@@ -16,38 +16,56 @@
 
 .actionsList {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
-  justify-content: center;
+  width: 100%;
 }
 
-.actionBadge {
-  display: inline-flex;
+.actionItem {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  background: #ffffff;
-  border: 1px solid #9fe165;
-  border-radius: 16px;
+  gap: 8px;
+  padding: 8px 10px;
   color: #0a0a0a;
-  font-size: 12px;
+  font-size: 13px;
+  cursor: pointer;
 }
 
-.removeBadge {
-  width: 18px;
-  height: 18px;
+.actionItem.completed {
+  background: #f0f9e8;
+  border-color: #9fe165;
+}
+
+.actionItem.completed .actionText {
+  color: #888;
+}
+
+.actionCheckbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #9fe165;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.actionText {
+  flex: 1;
+}
+
+.removeAction {
+  width: 20px;
+  height: 20px;
   padding: 0;
   border: none;
-  color: #050505;
+  background: transparent;
+  color: #999;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 16px;
   transition: color 0.2s ease;
-}
-
-.removeBadge:hover {
-  color: #333;
+  flex-shrink: 0;
 }
 
 .addActionBtn {

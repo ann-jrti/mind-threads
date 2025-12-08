@@ -3,10 +3,7 @@
 import { useState } from "react";
 import TextInputModal from "../Board/TextInputModal";
 import { Archive } from "lucide-react";
-import {
-  addActionToThread,
-  removeActionFromThread,
-} from "@/utils/threadStorage";
+import { addActionToThread, toggleActionInThread } from "@/utils/threadStorage";
 
 import styles from "./Actions.module.css";
 
@@ -19,8 +16,8 @@ export default function Actions({ thread, onArchive, onUpdate }) {
     setIsModalOpen(false);
   }
 
-  function handleRemoveAction(actionId) {
-    const updatedThread = removeActionFromThread(thread, actionId);
+  function handleToggleAction(actionId) {
+    const updatedThread = toggleActionInThread(thread, actionId);
     onUpdate(updatedThread);
   }
 
@@ -30,16 +27,15 @@ export default function Actions({ thread, onArchive, onUpdate }) {
         <div className={styles.actionsList}>
           {thread.actions &&
             thread.actions.map((action) => (
-              <div key={action.id} className={styles.actionBadge}>
-                <span>{action.text}</span>
-                <button
-                  className={styles.removeBadge}
-                  onClick={() => handleRemoveAction(action.id)}
-                  aria-label={`Remove action: ${action.text}`}
-                >
-                  ×
-                </button>
-              </div>
+              <label key={action.id} className={styles.actionItem}>
+                <input
+                  type="checkbox"
+                  checked={action.completed || false}
+                  onChange={() => handleToggleAction(action.id)}
+                  className={styles.actionCheckbox}
+                />
+                <span className={styles.actionText}>{action.text}</span>
+              </label>
             ))}
         </div>
 

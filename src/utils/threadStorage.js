@@ -104,6 +104,7 @@ export function addActionToThread(thread, text) {
       {
         id: Date.now(),
         text,
+        completed: false,
         createdAt: new Date().toISOString(),
       },
     ],
@@ -112,15 +113,19 @@ export function addActionToThread(thread, text) {
 }
 
 /**
- * Remove an action from a thread
+ * Toggle an action's completed status
  * @param {Object} thread - The thread object
- * @param {number} actionId - The ID of the action to remove
+ * @param {number} actionId - The ID of the action to toggle
  * @returns {Object} - The updated thread object
  */
-export function removeActionFromThread(thread, actionId) {
+export function toggleActionInThread(thread, actionId) {
   return {
     ...thread,
-    actions: thread.actions.filter((action) => action.id !== actionId),
+    actions: thread.actions.map((action) =>
+      action.id === actionId
+        ? { ...action, completed: !action.completed }
+        : action
+    ),
     updatedAt: new Date().toISOString(),
   };
 }
