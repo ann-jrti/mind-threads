@@ -87,3 +87,16 @@ a {
     color-scheme: dark;
   }
 }
+
+@media (max-width: 768px) {
+  html,
+  body {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}

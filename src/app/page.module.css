@@ -1,8 +1,17 @@
 .main {
   height: 100vh;
+  height: 100dvh;
   padding: 20px;
   padding-right: 100px;
   background: #fafafa;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 16px;
+    padding-right: 16px;
+    padding-bottom: 80px;
+  }
 }

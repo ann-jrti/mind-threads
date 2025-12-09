@@ -20,11 +20,32 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
+@media (max-width: 768px) {
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 24px 28px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    background: var(--background);
+    z-index: 10;
+    border-bottom: 1px solid #e0e0e0;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -62,6 +83,13 @@
   padding: 28px;
 }
 
+@media (max-width: 768px) {
+  .content {
+    padding: 16px 20px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  }
+}
+
 .emptyMessage {
   text-align: center;
   color: #999;
@@ -73,6 +101,13 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .threadsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
 .monthList {
@@ -190,6 +225,20 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .confirmDialog {
+    margin: 16px;
+    padding: 24px;
+  }
+
+  .cancelButton,
+  .confirmButton {
+    padding: 12px 20px;
+    min-height: 44px;
+    font-size: 16px;
+  }
 }
 
 .confirmMessage {

@@ -30,6 +30,14 @@
   cursor: pointer;
 }
 
+@media (max-width: 768px) {
+  .actionItem {
+    padding: 10px 12px;
+    font-size: 15px;
+    gap: 12px;
+  }
+}
+
 .actionItem.completed {
   background: #f0f9e8;
   border-color: #9fe165;
@@ -45,6 +53,13 @@
   accent-color: #9fe165;
   cursor: pointer;
   flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .actionCheckbox {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .actionText {
@@ -103,6 +118,16 @@
 
 .addActionBtn:hover {
   background: #9fe165;
+}
+
+@media (max-width: 768px) {
+  .addActionBtn {
+    padding: 10px 12px;
+    font-size: 15px;
+    min-height: 44px;
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .archiveBtn {

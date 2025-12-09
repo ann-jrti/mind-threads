@@ -38,3 +38,13 @@
   background: rgba(0, 0, 0, 0.15);
   border-radius: 4px;
 }
+
+@media (max-width: 768px) {
+  .board {
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    gap: 0;
+    padding-bottom: 20px;
+  }
+}
