@@ -146,3 +146,17 @@ export function updateActionInThread(thread, actionId, newText) {
     updatedAt: new Date().toISOString(),
   };
 }
+
+/**
+ * Remove an action from a thread
+ * @param {Object} thread - The thread object
+ * @param {number} actionId - The ID of the action to remove
+ * @returns {Object} - The updated thread object
+ */
+export function removeActionFromThread(thread, actionId) {
+  return {
+    ...thread,
+    actions: thread.actions.filter((action) => action.id !== actionId),
+    updatedAt: new Date().toISOString(),
+  };
+}

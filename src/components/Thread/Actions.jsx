@@ -7,6 +7,7 @@ import {
   addActionToThread,
   toggleActionInThread,
   updateActionInThread,
+  removeActionFromThread,
 } from "@/utils/threadStorage";
 
 import styles from "./Actions.module.css";
@@ -24,6 +25,11 @@ export default function Actions({ thread, onArchive, onUpdate }) {
 
   function handleToggleAction(actionId) {
     const updatedThread = toggleActionInThread(thread, actionId);
+    onUpdate(updatedThread);
+  }
+
+  function handleRemoveAction(actionId) {
+    const updatedThread = removeActionFromThread(thread, actionId);
     onUpdate(updatedThread);
   }
 
@@ -91,6 +97,13 @@ export default function Actions({ thread, onArchive, onUpdate }) {
                     {action.text}
                   </span>
                 )}
+                <button
+                  className={styles.removeAction}
+                  onClick={() => handleRemoveAction(action.id)}
+                  aria-label={`Remove action: ${action.text}`}
+                >
+                  ×
+                </button>
               </div>
             ))}
         </div>
