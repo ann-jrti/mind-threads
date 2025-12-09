@@ -38,7 +38,7 @@ export function createThread(title) {
  * Add an update to a thread
  * @param {Object} thread - The thread object
  * @param {string} text - The update text
- * @returns {Object} - The updated thread object
+ * @returns {Object} - The updated thread object (with completed actions removed)
  */
 export function addUpdateToThread(thread, text) {
   const timestamp = new Date();
@@ -55,6 +55,7 @@ export function addUpdateToThread(thread, text) {
         displayDate: formatDisplayDate(timestamp),
       },
     ],
+    actions: thread.actions.filter((action) => !action.completed),
     updatedAt: createdAt,
   };
 }
