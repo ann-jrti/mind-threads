@@ -16,8 +16,8 @@ export default function Sidebar({ onAddThread, onOpenArchived }) {
         <Image
           src="/mind-threads-logo.png"
           alt="Mind Threads"
-          width={50}
-          height={50}
+          width={60}
+          height={60}
           className={styles.logo}
         />
       </div>

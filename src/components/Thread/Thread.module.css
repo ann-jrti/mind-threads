@@ -34,13 +34,13 @@
   border-radius: 50%;
   background: black;
   color: white;
-  line-height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   cursor: pointer;
   font-size: 18px;
+  padding-bottom: 3px;
 }
 
 .updates {

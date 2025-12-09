@@ -70,8 +70,5 @@
 .logoContainer {
   margin-top: auto;
   padding-bottom: 10px;
-}
-
-.logo {
-  opacity: 0.8;
+  padding-left: 5px;
 }
