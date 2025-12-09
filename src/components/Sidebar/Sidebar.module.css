@@ -66,3 +66,12 @@
     background: #555555;
   }
 }
+
+.logoContainer {
+  margin-top: auto;
+  padding-bottom: 10px;
+}
+
+.logo {
+  opacity: 0.8;
+}

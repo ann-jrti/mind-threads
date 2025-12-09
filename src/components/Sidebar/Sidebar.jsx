@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import styles from "./Sidebar.module.css";
 
 export default function Sidebar({ onAddThread, onOpenArchived }) {
@@ -11,6 +12,15 @@ export default function Sidebar({ onAddThread, onOpenArchived }) {
       <button className={styles.archivedButton} onClick={onOpenArchived}>
         archive
       </button>
+      <div className={styles.logoContainer}>
+        <Image
+          src="/mind-threads-logo.png"
+          alt="Mind Threads"
+          width={50}
+          height={50}
+          className={styles.logo}
+        />
+      </div>
     </aside>
   );
 }
