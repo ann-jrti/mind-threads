@@ -1,107 +1,62 @@
 "use client";
 
-import { useState } from "react";
 import TextInputModal from "../Board/TextInputModal";
 import Actions from "./Actions";
-import {
-  addUpdateToThread,
-  updateUpdateInThread,
-  formatDisplayDate,
-} from "@/utils/threadStorage";
-import { parseTextWithLinks } from "@/utils/linkify";
+import useThread from "./useThread";
 import { ListChevronsDownUp, ListChevronsUpDown } from "lucide-react";
 
 import styles from "./Thread.module.css";
 
-export default function Thread({ thread, onUpdate, onArchive }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingUpdateId, setEditingUpdateId] = useState(null);
-  const [editingText, setEditingText] = useState("");
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  function getDisplayDate(update) {
-    if (!update) return "";
-    if (update.displayDate) return update.displayDate;
-    if (update.createdAt) {
-      const parsedDate = new Date(update.createdAt);
-      if (!Number.isNaN(parsedDate.getTime())) {
-        return formatDisplayDate(parsedDate);
-      }
+function renderTextWithLinks(parts, stylesRef) {
+  return parts.map((part, index) => {
+    if (part.type === "link") {
+      return (
+        <a
+          key={index}
+          href={part.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={stylesRef.link}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {part.content}
+        </a>
+      );
     }
-    return "";
-  }
+    return <span key={index}>{part.content}</span>;
+  });
+}
 
-  function handleAddUpdate(text) {
-    const updatedThread = addUpdateToThread(thread, text);
-    onUpdate(updatedThread);
-    setIsModalOpen(false);
-  }
-
-  function handleEditUpdate(updateId, newText) {
-    const updatedThread = updateUpdateInThread(thread, updateId, newText);
-    onUpdate(updatedThread);
-    setEditingUpdateId(null);
-    setEditingText("");
-  }
-
-  function handleEditClick(update) {
-    setEditingUpdateId(update.id);
-    setEditingText(update.text);
-  }
-
-  function handleToggleCollapse() {
-    setIsCollapsed((s) => !s);
-  }
-
-  function renderTextWithLinks(text) {
-    const parts = parseTextWithLinks(text);
-
-    return parts.map((part, index) => {
-      if (part.type === "link") {
-        return (
-          <a
-            key={index}
-            href={part.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.link}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {part.content}
-          </a>
-        );
-      }
-      return <span key={index}>{part.content}</span>;
-    });
-  }
-
-  const latestUpdate =
-    thread.updates.length > 0
-      ? thread.updates[thread.updates.length - 1]
-      : null;
+export default function Thread({ thread, onUpdate, onArchive }) {
+  const { state, data, actions, utils } = useThread(
+    thread,
+    onUpdate,
+    onArchive
+  );
 
   return (
     <div className={styles.thread}>
       <div className={styles.header}>
-        <h3 className={styles.title}>{thread.title}</h3>
-
+        <h3 className={styles.title}>{data.title}</h3>
         <button
           className={styles.addBtn}
-          onClick={() => setIsModalOpen(true)}
+          onClick={actions.openModal}
           aria-label="Add update"
         >
           +
         </button>
       </div>
 
-      {thread.updates.length > 1 && (
+      {data.hasMultipleUpdates && (
         <div className={styles.toggleRow}>
           <button
             className={styles.uncollapseBtn}
-            onClick={handleToggleCollapse}
-            aria-label={isCollapsed ? "Uncollapse updates" : "Collapse updates"}
+            onClick={actions.handleToggleCollapse}
+            aria-label={
+              state.isCollapsed ? "Uncollapse updates" : "Collapse updates"
+            }
           >
-            {isCollapsed ? (
+            {state.isCollapsed ? (
               <ListChevronsUpDown color="black" width="18" strokeWidth="1" />
             ) : (
               <ListChevronsDownUp color="black" width="18" strokeWidth="1" />
@@ -111,37 +66,45 @@ export default function Thread({ thread, onUpdate, onArchive }) {
       )}
 
       <div className={styles.updates}>
-        {thread.updates.length > 0 && isCollapsed && latestUpdate && (
-          <div key={latestUpdate.id} className={styles.update}>
+        {data.hasUpdates && state.isCollapsed && data.latestUpdate && (
+          <div key={data.latestUpdate.id} className={styles.update}>
             <button
               className={styles.editBtn}
-              onClick={() => handleEditClick(latestUpdate)}
+              onClick={() => actions.handleEditClick(data.latestUpdate)}
               aria-label="Edit update"
             >
               <p className={styles.updateText}>
                 <span className={styles.dateText}>
-                  {getDisplayDate(latestUpdate)}
+                  {utils.getDisplayDate(data.latestUpdate)}
                 </span>
-                {renderTextWithLinks(latestUpdate.text)}
+                {renderTextWithLinks(
+                  utils.getTextWithLinks(data.latestUpdate.text),
+                  styles
+                )}
               </p>
             </button>
           </div>
         )}
 
-        {thread.updates.length > 0 &&
-          !isCollapsed &&
-          thread.updates.map((update) => (
+        {data.hasUpdates &&
+          !state.isCollapsed &&
+          data.updates.map((update) => (
             <div key={update.id} className={styles.update}>
               <button
                 className={styles.editBtn}
-                onClick={() => handleEditClick(update)}
+                onClick={() => actions.handleEditClick(update)}
                 aria-label="Edit update"
               >
                 <p className={styles.updateText}>
                   <span className={styles.dateText}>
-                    {getDisplayDate(update)}
+                    {utils.getDisplayDate(update)}
                   </span>
-                  <span>{renderTextWithLinks(update.text)}</span>
+                  <span>
+                    {renderTextWithLinks(
+                      utils.getTextWithLinks(update.text),
+                      styles
+                    )}
+                  </span>
                 </p>
               </button>
             </div>
@@ -149,34 +112,31 @@ export default function Thread({ thread, onUpdate, onArchive }) {
       </div>
 
       <Actions
-        onArchive={() => onArchive(thread.id)}
+        onArchive={actions.handleArchive}
         thread={thread}
         onUpdate={onUpdate}
       />
 
-      {isModalOpen && (
+      {state.isModalOpen && (
         <TextInputModal
           title="add update"
           type="update"
           placeholder="..."
           submitLabel="add"
-          onSubmit={handleAddUpdate}
-          onCancel={() => setIsModalOpen(false)}
+          onSubmit={actions.handleAddUpdate}
+          onCancel={actions.closeModal}
         />
       )}
 
-      {editingUpdateId !== null && (
+      {state.isEditing && (
         <TextInputModal
           title="edit update"
           placeholder="..."
           submitLabel="update"
-          initialValue={editingText}
+          initialValue={state.editingText}
           type="update"
-          onSubmit={(text) => handleEditUpdate(editingUpdateId, text)}
-          onCancel={() => {
-            setEditingUpdateId(null);
-            setEditingText("");
-          }}
+          onSubmit={actions.handleEditUpdate}
+          onCancel={actions.handleCancelEdit}
         />
       )}
     </div>
