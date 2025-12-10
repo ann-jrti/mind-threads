@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import styles from "./TextInputModal.module.css";
 
 export default function TextInputModal({
@@ -13,6 +13,20 @@ export default function TextInputModal({
   type = "default",
 }) {
   const [text, setText] = useState(initialValue);
+  const textareaRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const element = type === "update" ? textareaRef.current : inputRef.current;
+    if (element) {
+      element.focus();
+      // positions the cursor at the end of the text when editing an update
+      requestAnimationFrame(() => {
+        const length = element.value.length;
+        element.setSelectionRange(length, length);
+      });
+    }
+  }, [type]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -40,20 +54,20 @@ export default function TextInputModal({
         <form onSubmit={handleSubmit} className={styles.form}>
           {type === "update" ? (
             <textarea
+              ref={textareaRef}
               className={styles.textarea}
               placeholder={placeholder}
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={handleKeyDown}
-              autoFocus
             />
           ) : (
             <input
+              ref={inputRef}
               className={styles.input}
               placeholder={placeholder}
               value={text}
               onChange={(e) => setText(e.target.value)}
-              autoFocus
             />
           )}
 
