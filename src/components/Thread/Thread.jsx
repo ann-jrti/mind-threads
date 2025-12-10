@@ -8,6 +8,7 @@ import {
   updateUpdateInThread,
   formatDisplayDate,
 } from "@/utils/threadStorage";
+import { parseTextWithLinks } from "@/utils/linkify";
 import { ListChevronsDownUp, ListChevronsUpDown } from "lucide-react";
 
 import styles from "./Thread.module.css";
@@ -50,6 +51,28 @@ export default function Thread({ thread, onUpdate, onArchive }) {
 
   function handleToggleCollapse() {
     setIsCollapsed((s) => !s);
+  }
+
+  function renderTextWithLinks(text) {
+    const parts = parseTextWithLinks(text);
+
+    return parts.map((part, index) => {
+      if (part.type === "link") {
+        return (
+          <a
+            key={index}
+            href={part.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.link}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {part.content}
+          </a>
+        );
+      }
+      return <span key={index}>{part.content}</span>;
+    });
   }
 
   const latestUpdate =
@@ -99,7 +122,7 @@ export default function Thread({ thread, onUpdate, onArchive }) {
                 <span className={styles.dateText}>
                   {getDisplayDate(latestUpdate)}
                 </span>
-                {latestUpdate.text}
+                {renderTextWithLinks(latestUpdate.text)}
               </p>
             </button>
           </div>
@@ -118,7 +141,7 @@ export default function Thread({ thread, onUpdate, onArchive }) {
                   <span className={styles.dateText}>
                     {getDisplayDate(update)}
                   </span>
-                  <span>{update.text}</span>
+                  <span>{renderTextWithLinks(update.text)}</span>
                 </p>
               </button>
             </div>

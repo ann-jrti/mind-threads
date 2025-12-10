@@ -104,6 +104,12 @@
   padding-right: 5px;
 }
 
+.link {
+  color: #85cc46;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .update {
     margin-bottom: 30px;
