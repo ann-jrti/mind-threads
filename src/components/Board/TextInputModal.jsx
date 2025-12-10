@@ -22,6 +22,16 @@ export default function TextInputModal({
     setText("");
   }
 
+  function handleKeyDown(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (text.trim()) {
+        onSubmit(text.trim());
+        setText("");
+      }
+    }
+  }
+
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
@@ -34,6 +44,7 @@ export default function TextInputModal({
               placeholder={placeholder}
               value={text}
               onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleKeyDown}
               autoFocus
             />
           ) : (
