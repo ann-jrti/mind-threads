@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Thread from "@/components/Thread/Thread";
 import TextInputModal from "./TextInputModal";
@@ -23,6 +24,23 @@ export default function Board({
     ARCHIVED_THREADS_KEY,
     []
   );
+
+  const boardRef = useRef(null);
+
+  useEffect(() => {
+    const board = boardRef.current;
+    if (!board) return;
+
+    const handleWheel = (e) => {
+      if (board.scrollWidth > board.clientWidth) {
+        e.preventDefault();
+        board.scrollLeft += e.deltaY;
+      }
+    };
+
+    board.addEventListener("wheel", handleWheel, { passive: false });
+    return () => board.removeEventListener("wheel", handleWheel);
+  }, []);
 
   function handleAddThread(title) {
     const newThread = createThread(title);
@@ -58,7 +76,7 @@ export default function Board({
 
   return (
     <div className={styles.boardWrapper}>
-      <div className={styles.board}>
+      <div className={styles.board} ref={boardRef}>
         {typeof window !== "undefined" &&
           threads.map((thread) => (
             <Thread
