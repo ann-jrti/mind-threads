@@ -96,6 +96,7 @@
   text-align: start;
   padding-right: 15px;
   gap: 6px;
+  white-space: pre-wrap;
 }
 
 .dateText {
